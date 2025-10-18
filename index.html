@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>XICAL — Donde la tradición se reinventa en tu paladar</title>
+<style>
+/* Reset */
+* { box-sizing:border-box; margin:0; padding:0; }
+html, body { height:100%; scroll-behavior:smooth; }
+body { font-family:'Helvetica Neue', Arial, sans-serif; color:#333; background:#f6f2ef; line-height:1.4; }
+
+/* Layout */
+.site { min-height:100vh; display:flex; flex-direction:column; }
+
+/* Header */
+header { position:fixed; top:-100px; left:0; width:100%; background:#fff; color:#6a5a45; box-shadow:0 2px 5px rgba(0,0,0,0.1); z-index:100; transition:top 0.3s ease; }
+header.show { top:0; }
+
+.container { width:100%; max-width:1024px; margin:0 auto; padding:0 20px; display:flex; align-items:center; justify-content:space-between; }
+.topbar { display:flex; align-items:center; justify-content:center; width:100%; }
+
+/* Logo centrado solo imagen */
+.brand { display:flex; align-items:center; gap:0; flex-shrink:0; margin:0 12px; }
+.logo-mark { width:60px; height:60px; overflow:hidden; }
+
+/* Menús izquierdo y derecho más cerca del logo */
+.nav-left, .nav-right { display:flex; gap:8px; }
+.nav-left { margin-right:0; }
+.nav-right { margin-left:0; }
+
+nav a { color:#6a5a45; text-decoration:none; font-size:13px; letter-spacing:2px; text-transform:uppercase; padding:6px 4px; transition:color 0.3s ease; }
+nav a:hover { color:#a68b6f; }
+
+.hamburger { display:none; cursor:pointer; }
+
+/* Hero */
+.hero { height:100vh; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; color:#fff; }
+.hero::before { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:url('tacoo.jpg') center/cover no-repeat; filter:brightness(0.55); z-index:1; }
+.hero-text { position:relative; z-index:2; font-size:4rem; font-weight:700; letter-spacing:2px; text-shadow:2px 2px 8px rgba(0,0,0,0.6); text-align:center; animation:fadeInUp 1s forwards 0.5s; }
+.hero-subtext { font-size:1.4rem; font-weight:400; letter-spacing:1px; margin-top:10px; color:#f0e8dd; text-shadow:1px 1px 5px rgba(0,0,0,0.5); }
+@keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+/* About */
+.about { background:#efe7dd; padding:40px 20px; text-align:center; }
+.about-inner { display:flex; flex-direction:column; align-items:center; gap:20px; }
+.about-text h3 { font-size:14px; color:#5b523f; margin-bottom:8px; }
+.about-text p { font-size:14px; color:#5b523f; max-width:680px; margin:0 auto; }
+.cta { margin-top:12px; display:inline-block; border:1px solid #c7b09a; padding:8px 14px; border-radius:6px; background:#fff; color:#7b5f47; text-decoration:none; font-weight:600; }
+
+/* Carrusel */
+.thumbs { position:relative; width:100%; height:500px; overflow:hidden; margin:20px 0; border-radius:8px; }
+.carousel-track { display:flex; width:100%; height:100%; transition: transform 0.8s ease; }
+.thumb { flex:0 0 100%; height:100%; overflow:hidden; }
+.thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.carousel-btn { position:absolute; top:50%; transform:translateY(-50%); background: rgba(47,58,42,0.7); color:#fff; border:none; font-size:2rem; padding:4px 10px; cursor:pointer; z-index:2; border-radius:4px; }
+.carousel-btn.prev { left:10px; }
+.carousel-btn.next { right:10px; }
+.carousel-dots { position:absolute; bottom:15px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:2; }
+.carousel-dots button { width:12px; height:12px; border-radius:50%; border:none; background:rgba(255,255,255,0.5); cursor:pointer; }
+.carousel-dots button.active { background:#fff; }
+
+/* Historia */
+.history { padding:22px 20px; }
+.history .row { display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start; }
+.history .row .small-thumb { width:400px; height:300px; max-width:100%; background-size:cover; background-position:center; border-radius:8px; }
+.history .texts { flex:2 1 500px; display:flex; flex-direction:column; gap:20px; }
+.history h4 { font-size:15px; color:#3e3a33; margin-bottom:6px; }
+.history p { color:#5b523f; font-size:13px; }
+
+/* Menú */
+#menu-background { position:relative; width:100%; min-height:600px; background:url('fondo_menu.png') center/cover no-repeat; display:flex; justify-content:flex-end; align-items:flex-start; padding:60px 40px 40px 40px; }
+.menu-content-overlay { display:flex; flex-direction:column; align-items:flex-end; gap:20px; background:none; padding:16px; border-radius:8px; z-index:2; }
+.menu-filters { display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
+.menu-filters button { padding:6px 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.7); background: rgba(47,58,42,0.25); color:#fff; cursor:pointer; font-size:13px; transition:0.3s; }
+.menu-filters button.active { background: rgba(47,58,42,0.75); color:#fff; border-color: rgba(255,255,255,0.9); }
+.menu-items { display:grid; grid-template-columns:repeat(3,180px); grid-template-rows:repeat(2,200px); gap:12px; justify-content:end; }
+.menu-item { background:rgba(255,255,255,0.2); padding:12px; border-radius:6px; box-shadow:0 1px 4px rgba(0,0,0,0.1); display:flex; flex-direction:column; align-items:center; text-align:center; width:180px; color:#fff; }
+.menu-item img { width:100%; height:100px; object-fit:cover; border-radius:6px; margin-bottom:6px; }
+.menu-item h5 { font-size:14px; font-weight:600; margin-bottom:4px; }
+.menu-item p { font-size:12px; }
+
+/* Reservaciones */
+#reservaciones { padding:60px 20px; background:#f3eee5; }
+#reservaciones h2 { text-align:center; font-size:2rem; color:#3e3a33; margin-bottom:20px; }
+#reservaciones p { text-align:center; font-size:14px; color:#5b523f; margin-bottom:40px; }
+#reservaciones .form-container { display:flex; gap:40px; flex-wrap:wrap; justify-content:center; }
+#reservaciones form { display:flex; flex-direction:column; gap:16px; background:#fff; padding:30px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); width:350px; }
+#reservaciones form input, #reservaciones form textarea, #reservaciones form select { padding:12px; border-radius:6px; border:1px solid #d2c6ba; width:100%; }
+#reservaciones form button { padding:14px; border-radius:8px; border:none; background:#2f3a2a; color:#fff; font-weight:700; cursor:pointer; transition:0.3s; }
+#reservaciones form button:hover { background:#475237; }
+#reservaciones .empty-space { width:350px; } /* espacio al lado del formulario */
+
+/* Footer */
+footer { padding:28px 20px; background:#efe7dd; }
+.footer-inner { display:flex; flex-direction:column; gap:18px; align-items:flex-start; }
+.logo-sm { display:flex; gap:12px; align-items:center; }
+.newsletter { display:flex; gap:8px; width:100%; max-width:420px; }
+.newsletter input { flex:1; padding:10px; border-radius:6px; border:1px solid #d2c6ba; }
+.newsletter button { padding:10px 12px; border-radius:6px; border:0; background:#2f3a2a; color:#fff; cursor:pointer; }
+.footer-socials { display:flex; gap:12px; margin-top:10px; }
+.footer-socials a { text-decoration:none; color:#2f3a2a; font-size:18px; }
+
+/* Flecha arriba */
+.to-top { position:fixed; right:18px; bottom:18px; width:46px; height:46px; border-radius:50%; background:#efe7dd; border:1px solid #d5c9bd; display:flex; align-items:center; justify-content:center; text-decoration:none; color:#333; font-weight:bold; }
+
+/* Responsive */
+@media (max-width:800px){ .history .row { flex-direction: column; } .history .row .small-thumb { width: 100%; height:300px; } .history .texts { width:100%; } }
+@media (max-width:600px){ .nav-left, .nav-right { display:none; } .hamburger { display:block; } .hero-text { font-size:2.5rem; } #reservaciones .form-container { flex-direction:column; align-items:center; } }
+</style>
+</head>
+<body>
+<div class="site">
+
+<header>
+<div class="container topbar">
+  <!-- Menú izquierdo -->
+  <nav class="nav-left">
+    <a href="#historia">Nuestra historia</a>
+    <a href="#menu-background">Menú</a>
+  </nav>
+
+  <!-- Logo centrado solo imagen -->
+  <div class="brand">
+    <div class="logo-mark">
+      <img src="logoverde.png" alt="Logo XICAL" style="width:100%;height:100%;object-fit:contain;">
+    </div>
+  </div>
+
+  <!-- Menú derecho -->
+  <nav class="nav-right">
+    <a href="#galeria">Galería</a>
+    <a href="#reservaciones">Reservaciones</a>
+  </nav>
+
+  <div class="hamburger">☰</div>
+</div>
+</header>
+
+<main>
+<section class="hero">
+<div class="hero-text">XICAL<div class="hero-subtext">Donde la tradición se reinventa en tu paladar</div></div>
+</section>
+
+<section class="about">
+<div class="container about-inner">
+<div class="about-text">
+<h3>SOBRE NOSOTROS<br><small style="font-weight:600;color:#7b5f47">NUESTRA FILOSOFÍA DE ORIGEN</small></h3>
+<p>XICAL nace de la tradición y de nuestras raíces. De un error entre ‘tuna’ y ‘tina’ surgió la inspiración para transformar sueños frustrados en experiencias únicas. En Xical, cada plato a la carta celebra la riqueza de la cocina tradicional mexicana, reinterpretada con elegancia y modernidad.</p>
+<a class="cta" href="#">EXPLORA NUESTROS SABORES</a>
+</div>
+</div>
+</section>
+
+<section class="thumbs" id="galeria">
+<button class="carousel-btn prev">‹</button>
+<div class="carousel-track">
+<div class="thumb"><img src="galeria1.jpg" alt="Ingrediente o proceso 1"></div>
+<div class="thumb"><img src="galeria2.jpg" alt="Ingrediente o proceso 2"></div>
+<div class="thumb"><img src="galeria3.jpg" alt="Ingrediente o proceso 3"></div>
+<div class="thumb"><img src="galeria4.jpg" alt="Ingrediente o proceso 4"></div>
+</div>
+<button class="carousel-btn next">›</button>
+<div class="carousel-dots"></div>
+</section>
+
+<section class="history container" id="historia">
+<div class="row">
+<div class="small-thumb" style="background:url('ORIGENES.png') center/cover no-repeat;"></div>
+<div class="texts">
+<div><h4>HISTORIA Y ORIGEN</h4><p>Xical nace a partir de los sueños frustrados de uno de sus fundadores. Inspirados en la riqueza de la cocina tradicional mexicana, decidimos transformar recetas clásicas en experiencias únicas.</p></div>
+<div><h4>MISIÓN</h4><p>Ofrecer experiencias gastronómicas auténticas que conecten con nuestras raíces y sorprendan al paladar contemporáneo.</p></div>
+<div><h4>VISIÓN</h4><p>Ser un referente de la gastronomía mexicana contemporánea, fusionando tradición y creatividad.</p></div>
+<div><h4>VALORES CORPORATIVOS</h4><p>Tradición, creatividad, excelencia y compromiso con la autenticidad.</p></div>
+</div>
+</div>
+</section>
+
+<section id="menu-background">
+<div class="menu-content-overlay container">
+<div class="menu-filters">
+<button class="active" data-type="all">Todos</button>
+<button data-type="entrada">Entradas</button>
+<button data-type="plato">Platos fuertes</button>
+<button data-type="postre">Postres</button>
+<button data-type="bebida">Bebidas</button>
+</div>
+<div class="menu-items">
+<div class="menu-item" data-type="entrada"><img src="entrada1.jpg" alt="Entrada 1"><h5>Guacamole tradicional</h5><p>Puré de aguacate fresco con totopos crujientes.</p></div>
+<div class="menu-item" data-type="plato"><img src="plato1.jpg" alt="Plato fuerte 1"><h5>Mole poblano</h5><p>Pollo bañado en mole con semillas y chocolate.</p></div>
+<div class="menu-item" data-type="postre"><img src="postre1.jpg" alt="Postre 1"><h5>Flan de cajeta</h5><p>Clásico flan bañado en cajeta de cabra.</p></div>
+<div class="menu-item" data-type="bebida"><img src="bebida1.jpg" alt="Bebida 1"><h5>Atole de chocolate</h5><p>Bebida caliente tradicional con maíz y cacao.</p></div>
+</div>
+</div>
+</section>
+
+<section id="reservaciones">
+  <div class="container">
+    <h2>Reservaciones</h2>
+    <p>Reserva tu mesa y disfruta de la auténtica cocina mexicana con nosotros. Completa el formulario y nuestro equipo confirmará tu reserva.</p>
+    <div class="form-container">
+      <form>
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <input type="text" placeholder="Nombre" required>
+          <input type="text" placeholder="Apellido" required>
+        </div>
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <input type="email" placeholder="Correo electrónico" required>
+          <input type="tel" placeholder="Teléfono" required>
+        </div>
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <input type="number" placeholder="Número de personas" required>
+          <input type="date" required>
+        </div>
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <input type="time" required>
+          <input type="text" placeholder="Comentarios adicionales">
+        </div>
+        <button type="submit">Reservar Mesa</button>
+      </form>
+      <div class="empty-space"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div class="logo-sm">
+      <div class="logo-mark" style="width:44px;height:44px;">
+        <img src="logoverde.png" alt="Logo XICAL pequeño" style="width:100%;height:100%;object-fit:cover;" />
+      </div>
+    </div>
+    <form class="newsletter">
+      <input type="email" placeholder="Tu correo electrónico" />
+      <button type="submit">Suscribirse</button>
+    </form>
+    <div class="footer-socials">
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+      <a href="#">TikTok</a>
+    </div>
+    <p style="font-size:12px;color:#5b523f;">&copy; 2025 XICAL. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<a href="#" class="to-top">↑</a>
+</div>
+
+<script>
+  // Mostrar header al hacer scroll
+  const header = document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) header.classList.add('show');
+    else header.classList.remove('show');
+  });
+
+  // Filtros menú
+  const filterBtns = document.querySelectorAll('.menu-filters button');
+  const menuItems = document.querySelectorAll('.menu-item');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const type = btn.dataset.type;
+      menuItems.forEach(item => {
+        item.style.display = (type === 'all' || item.dataset.type === type) ? 'flex' : 'none';
+      });
+    });
+  });
+
+  // Carrusel automático
+  const track = document.querySelector('.carousel-track');
+  const thumbs = Array.from(track.children);
+  const nextBtn = document.querySelector('.carousel-btn.next');
+  const prevBtn = document.querySelector('.carousel-btn.prev');
+  const dotsContainer = document.querySelector('.carousel-dots');
+
+  thumbs.forEach((_, i) => {
+    const dot = document.createElement('button');
+    if (i === 0) dot.classList.add('active');
+    dotsContainer.appendChild(dot);
+  });
+
+  const dots = Array.from(dotsContainer.children);
+  let current = 0;
+  function showSlide(index) {
+    if (index < 0) index = thumbs.length - 1;
+    if (index >= thumbs.length) index = 0;
+    track.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach(d => d.classList.remove('active'));
+    dots[index].classList.add('active');
+    current = index;
+  }
+
+  nextBtn.addEventListener('click', () => showSlide(current + 1));
+  prevBtn.addEventListener('click', () => showSlide(current - 1));
+  dots.forEach((dot, i) => dot.addEventListener('click', () => showSlide(i)));
+
+  // Cambio automático cada 5 segundos
+  setInterval(() => showSlide(current + 1), 5000);
+
+  // Flecha para subir
+  const toTop = document.querySelector('.to-top');
+  toTop.addEventListener('click', e => {
+    e.preventDefault();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+</script>
+
+</body>
+</html>

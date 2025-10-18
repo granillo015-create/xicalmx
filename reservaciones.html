@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Reservaciones — XICAL</title>
+  <style>
+    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; background:#efe7dd; color:#333; margin:0; padding:0; }
+    header { background:#2f3a2a; color:#eae0d6; padding:16px 0; text-align:center; }
+    header a { color:#eae0d6; text-decoration:none; font-weight:bold; }
+    main { max-width:600px; margin:60px auto; background:#fff; padding:40px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+    h2 { color:#2f3a2a; text-align:center; margin-bottom:20px; }
+    p { text-align:center; color:#5b523f; margin-bottom:24px; }
+    form { display:flex; flex-direction:column; gap:14px; }
+    label { font-weight:500; color:#3b342a; }
+    input, textarea { padding:10px; border-radius:6px; border:1px solid #ccc; font-size:14px; }
+    button { padding:12px; background:#2f3a2a; color:#fff; border:none; border-radius:6px; cursor:pointer; }
+    button:hover { background:#3f4d3a; }
+  </style>
+</head>
+
+<body>
+<header>
+  <a href="index.html">← Volver al inicio</a>
+</header>
+
+<main>
+  <h2>Reservaciones</h2>
+  <p>Completa el formulario para reservar tu mesa en XICAL. Te confirmaremos por correo electrónico.</p>
+  <form name="reservaciones" method="POST" data-netlify="true">
+    <label>Nombre completo:</label>
+    <input type="text" name="nombre" required>
+
+    <label>Correo electrónico:</label>
+    <input type="email" name="email" required>
+
+    <label>Teléfono:</label>
+    <input type="tel" name="telefono" required>
+
+    <label>Fecha y hora:</label>
+    <input type="datetime-local" name="fecha" required>
+
+    <label>Mensaje adicional:</label>
+    <textarea name="mensaje" rows="4" placeholder="Ejemplo: mesa para 4 personas"></textarea>
+
+    <button type="submit">Enviar reservación</button>
+  </form>
+</main>
+</body>
+</html>
